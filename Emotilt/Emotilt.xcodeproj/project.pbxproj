@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B860149729AE3E6B00C27112 /* Peer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B860149629AE3E6B00C27112 /* Peer.swift */; };
+		B860149929AE3F5C00C27112 /* MPCSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B860149829AE3F5C00C27112 /* MPCSessionManager.swift */; };
+		B860149D29AE549C00C27112 /* PeerSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B860149C29AE549C00C27112 /* PeerSessionManager.swift */; };
+		B86014A129AE5E3400C27112 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86014A029AE5E3400C27112 /* HomeViewModel.swift */; };
+		B86014A429B19B3000C27112 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86014A329B19B3000C27112 /* Configuration.swift */; };
+		B86014A629B1A72700C27112 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86014A529B1A72700C27112 /* BaseViewModel.swift */; };
+		B86014A829B1BE3100C27112 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86014A729B1BE3100C27112 /* RoundedButton.swift */; };
+		B86014AA29B1BE6D00C27112 /* MessagePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86014A929B1BE6D00C27112 /* MessagePopupView.swift */; };
+		B86014AC29B1D03B00C27112 /* Float+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86014AB29B1D03B00C27112 /* Float+ext.swift */; };
 		B8E7E25429AC8AD90046D98E /* EmotiltApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E7E25329AC8AD90046D98E /* EmotiltApp.swift */; };
 		B8E7E25629AC8AD90046D98E /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E7E25529AC8AD90046D98E /* HomeView.swift */; };
 		B8E7E25829AC8ADA0046D98E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B8E7E25729AC8ADA0046D98E /* Assets.xcassets */; };
@@ -15,6 +24,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B860149629AE3E6B00C27112 /* Peer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Peer.swift; sourceTree = "<group>"; };
+		B860149829AE3F5C00C27112 /* MPCSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCSessionManager.swift; sourceTree = "<group>"; };
+		B860149C29AE549C00C27112 /* PeerSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerSessionManager.swift; sourceTree = "<group>"; };
+		B86014A029AE5E3400C27112 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		B86014A229B1994D00C27112 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		B86014A329B19B3000C27112 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		B86014A529B1A72700C27112 /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
+		B86014A729B1BE3100C27112 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
+		B86014A929B1BE6D00C27112 /* MessagePopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagePopupView.swift; sourceTree = "<group>"; };
+		B86014AB29B1D03B00C27112 /* Float+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Float+ext.swift"; sourceTree = "<group>"; };
 		B8E7E25029AC8AD90046D98E /* Emotilt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Emotilt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8E7E25329AC8AD90046D98E /* EmotiltApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmotiltApp.swift; sourceTree = "<group>"; };
 		B8E7E25529AC8AD90046D98E /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -35,6 +54,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B860149529AE3E4A00C27112 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				B86014A329B19B3000C27112 /* Configuration.swift */,
+				B860149C29AE549C00C27112 /* PeerSessionManager.swift */,
+				B860149829AE3F5C00C27112 /* MPCSessionManager.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
 		B8E7E24729AC8AD90046D98E = {
 			isa = PBXGroup;
 			children = (
@@ -55,10 +84,12 @@
 			isa = PBXGroup;
 			children = (
 				B8E7E26129AC8BAD0046D98E /* Info.plist */,
+				B86014A229B1994D00C27112 /* Config.xcconfig */,
 				B8E7E25329AC8AD90046D98E /* EmotiltApp.swift */,
 				B8E7E26529AC8C4A0046D98E /* Extensions */,
 				B8E7E26229AC8C360046D98E /* Views */,
 				B8E7E26429AC8C400046D98E /* ViewModels */,
+				B860149529AE3E4A00C27112 /* Network */,
 				B8E7E26329AC8C3B0046D98E /* Models */,
 				B8E7E25729AC8ADA0046D98E /* Assets.xcassets */,
 				B8E7E25929AC8ADA0046D98E /* Preview Content */,
@@ -78,6 +109,8 @@
 			isa = PBXGroup;
 			children = (
 				B8E7E25529AC8AD90046D98E /* HomeView.swift */,
+				B86014A729B1BE3100C27112 /* RoundedButton.swift */,
+				B86014A929B1BE6D00C27112 /* MessagePopupView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -86,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				B8E7E26629AC8C690046D98E /* Message.swift */,
+				B860149629AE3E6B00C27112 /* Peer.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -93,6 +127,8 @@
 		B8E7E26429AC8C400046D98E /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				B86014A529B1A72700C27112 /* BaseViewModel.swift */,
+				B86014A029AE5E3400C27112 /* HomeViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -100,6 +136,7 @@
 		B8E7E26529AC8C4A0046D98E /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				B86014AB29B1D03B00C27112 /* Float+ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -174,8 +211,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B86014AC29B1D03B00C27112 /* Float+ext.swift in Sources */,
 				B8E7E26729AC8C690046D98E /* Message.swift in Sources */,
+				B86014A829B1BE3100C27112 /* RoundedButton.swift in Sources */,
+				B860149729AE3E6B00C27112 /* Peer.swift in Sources */,
+				B860149929AE3F5C00C27112 /* MPCSessionManager.swift in Sources */,
+				B86014A129AE5E3400C27112 /* HomeViewModel.swift in Sources */,
+				B86014AA29B1BE6D00C27112 /* MessagePopupView.swift in Sources */,
 				B8E7E25629AC8AD90046D98E /* HomeView.swift in Sources */,
+				B86014A629B1A72700C27112 /* BaseViewModel.swift in Sources */,
+				B860149D29AE549C00C27112 /* PeerSessionManager.swift in Sources */,
+				B86014A429B19B3000C27112 /* Configuration.swift in Sources */,
 				B8E7E25429AC8AD90046D98E /* EmotiltApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -185,6 +231,7 @@
 /* Begin XCBuildConfiguration section */
 		B8E7E25C29AC8ADA0046D98E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B86014A229B1994D00C27112 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -233,7 +280,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -245,6 +292,7 @@
 		};
 		B8E7E25D29AC8ADA0046D98E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B86014A229B1994D00C27112 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -287,7 +335,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -299,6 +347,7 @@
 		};
 		B8E7E25F29AC8ADA0046D98E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B86014A229B1994D00C27112 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -311,8 +360,9 @@
 				INFOPLIST_FILE = Emotilt/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -320,14 +370,18 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peng.Emotilt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		B8E7E26029AC8ADA0046D98E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B86014A229B1994D00C27112 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -340,8 +394,9 @@
 				INFOPLIST_FILE = Emotilt/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -349,9 +404,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.peng.Emotilt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
