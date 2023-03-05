@@ -9,9 +9,17 @@ import SwiftUI
 
 @main
 struct EmotiltApp: App {
+    
+    let peerSessionManager: PeerSessionManager
+    
+    init() {
+        peerSessionManager = .init(mpcSessionManager: .init())
+        
+    }
+    
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            HomeView(viewModel: .init(peerSessionManager: peerSessionManager))
         }
     }
 }

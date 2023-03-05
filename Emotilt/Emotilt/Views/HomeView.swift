@@ -8,19 +8,41 @@
 import SwiftUI
 
 struct HomeView: View {
+    
+    @ObservedObject var viewModel: HomeViewModel
+    
+    @State private var isEmojiSheetOpen: Bool = false
+    @State private var emoji: String = ""
+    @State private var content: String = ""
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        VStack(alignment: .center) {
+            Spacer().frame(height: 24)
+            
+            if let message = viewModel.receivedMessage {
+                Text(message.emoji)
+                    .font(.system(size: 42))
+                
+                Spacer().frame(height: 16)
+                
+                Text(message.content ?? "")
+                    .font(.system(size: 36))
+            }
+            
+            Spacer()
+            
+            RoundedButton(label: "Send") {
+                viewModel.sendMessage(.init(emoji: "🤔", content: "Nyam"))
+            }
+            
+            Spacer().frame(height: 16)
         }
-        .padding()
+        .padding(.horizontal, 36)
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        HomeView(viewModel: .init(peerSessionManager: .debug))
     }
 }
