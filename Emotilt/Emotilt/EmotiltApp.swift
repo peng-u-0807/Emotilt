@@ -10,16 +10,16 @@ import SwiftUI
 @main
 struct EmotiltApp: App {
     
-    let interactor: PeerSessionManager
+    let peerSessionManager: PeerSessionManager
     
     init() {
-        interactor = .init(mpcSessionManager: .init())
+        peerSessionManager = .init(mpcSessionManager: .init())
         
     }
     
     var body: some Scene {
         WindowGroup {
-            HomeView(viewModel: .init(peerSessionManager: interactor))
+            HomeView(viewModel: .init(peerSessionManager: peerSessionManager))
         }
     }
 }
