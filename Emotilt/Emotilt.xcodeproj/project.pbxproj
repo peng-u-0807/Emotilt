@@ -28,7 +28,6 @@
 		B860149829AE3F5C00C27112 /* MPCSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCSessionManager.swift; sourceTree = "<group>"; };
 		B860149C29AE549C00C27112 /* PeerSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerSessionManager.swift; sourceTree = "<group>"; };
 		B86014A029AE5E3400C27112 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
-		B86014A229B1994D00C27112 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		B86014A329B19B3000C27112 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		B86014A529B1A72700C27112 /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 		B86014A729B1BE3100C27112 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
@@ -41,6 +40,7 @@
 		B8E7E25A29AC8ADA0046D98E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B8E7E26129AC8BAD0046D98E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		B8E7E26629AC8C690046D98E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		B8F22B9529B7117B00FAE9F9 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,7 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				B8E7E26129AC8BAD0046D98E /* Info.plist */,
-				B86014A229B1994D00C27112 /* Config.xcconfig */,
+				B8F22B9529B7117B00FAE9F9 /* Config.xcconfig */,
 				B8E7E25329AC8AD90046D98E /* EmotiltApp.swift */,
 				B8E7E26529AC8C4A0046D98E /* Extensions */,
 				B8E7E26229AC8C360046D98E /* Views */,
@@ -231,7 +231,7 @@
 /* Begin XCBuildConfiguration section */
 		B8E7E25C29AC8ADA0046D98E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B86014A229B1994D00C27112 /* Config.xcconfig */;
+			baseConfigurationReference = B8F22B9529B7117B00FAE9F9 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -292,7 +292,7 @@
 		};
 		B8E7E25D29AC8ADA0046D98E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B86014A229B1994D00C27112 /* Config.xcconfig */;
+			baseConfigurationReference = B8F22B9529B7117B00FAE9F9 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -347,7 +347,7 @@
 		};
 		B8E7E25F29AC8ADA0046D98E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B86014A229B1994D00C27112 /* Config.xcconfig */;
+			baseConfigurationReference = B8F22B9529B7117B00FAE9F9 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -381,7 +381,7 @@
 		};
 		B8E7E26029AC8ADA0046D98E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B86014A229B1994D00C27112 /* Config.xcconfig */;
+			baseConfigurationReference = B8F22B9529B7117B00FAE9F9 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
