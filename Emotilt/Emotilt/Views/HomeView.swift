@@ -17,17 +17,27 @@ struct HomeView: View {
     
     var body: some View {
         VStack(alignment: .center) {
+            Spacer()
+            
+            if emoji.isEmpty {
+                Button {
+                    isEmojiSheetOpen = true
+                } label: {
+                    RoundedRectangle(cornerRadius: 32)
+                        .fill(.tertiary.opacity(0.4))
+                        .frame(width: 168, height: 168)
+                }
+            } else {
+                Text(emoji)
+                    .font(.system(size: 168))
+            }
+            
             Spacer().frame(height: 24)
             
-            if let message = viewModel.receivedMessage {
-                Text(message.emoji)
-                    .font(.system(size: 42))
-                
-                Spacer().frame(height: 16)
-                
-                Text(message.content ?? "")
-                    .font(.system(size: 36))
-            }
+            TextField("", text: $content, prompt: Text("20자 이내"))
+                .font(.system(size: 24, weight: .bold))
+                .lineLimit(2)
+                .multilineTextAlignment(.center)
             
             Spacer()
             
@@ -38,6 +48,14 @@ struct HomeView: View {
             Spacer().frame(height: 16)
         }
         .padding(.horizontal, 36)
+        .sheet(isPresented: $isEmojiSheetOpen) {
+            EmojiSheet(selected: $emoji)
+        }
+        .sheet(isPresented: $viewModel.didReceiveMessage) {
+            if let messageMetaData = viewModel.receivedMessage {
+                MessagePopupView(messageMetaData: messageMetaData)
+            }
+        }
     }
 }
 

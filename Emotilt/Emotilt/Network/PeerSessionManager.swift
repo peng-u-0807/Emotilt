@@ -17,7 +17,7 @@ class PeerSessionManager: NSObject {
     @Published var peerList: [Peer] = []
     
     /// 수신한 메시지
-    @Published var receivedMessage: Message?
+    @Published var receivedMessage: MessageMetaData?
     
     /// 현재 내 로컬 디바이스와 가장 가까이 있는 기기의 discoveryToken
     @Published var nearestPeerToken: NIDiscoveryToken?
@@ -47,8 +47,8 @@ class PeerSessionManager: NSObject {
         mpcSessionManager.$received.compactMap { $0 }.receive(on: RunLoop.main).sink { [weak self] received in
             if let discoveryToken = try? NSKeyedUnarchiver.unarchivedObject(ofClass: NIDiscoveryToken.self, from: received.1) {
                 self?.receivedDiscoveryToken(from: received.0, token: discoveryToken)
-            } else if let message = try? JSONDecoder().decode(Message.self, from: received.1) {
-                self?.receivedMessage = message
+            } else if let messageMetaData = try? JSONDecoder().decode(MessageMetaData.self, from: received.1) {
+                self?.receivedMessage = messageMetaData
             }
         }.store(in: &bag)
     }
@@ -102,7 +102,7 @@ class PeerSessionManager: NSObject {
     }
     
     private func deleteUnconnectedPeer(_ peerID: MCPeerID) {
-        peerList.removeAll(where: { $0.id == peerID })
+        peerList.removeAll(where: { $0.id == peerID && $0.session.configuration != nil })
     }
     
     /// Session을 열어둔 상태에서 token을 받은 경우

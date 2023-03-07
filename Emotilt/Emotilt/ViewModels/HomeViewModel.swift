@@ -12,10 +12,12 @@ class HomeViewModel: BaseViewModel, ObservableObject {
     @Published var peerList: [Peer] = []
     
     /// 수신한 메시지
-    @Published var receivedMessage: Message?
+    @Published var receivedMessage: MessageMetaData?
     
+    /// close-only
     var didReceiveMessage: Bool {
-        receivedMessage != nil
+        get { receivedMessage != nil }
+        set { receivedMessage = nil }
     }
     
     override init(peerSessionManager: PeerSessionManager) {

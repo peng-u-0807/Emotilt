@@ -8,19 +8,31 @@
 import SwiftUI
 
 struct MessagePopupView: View {
-    let message: Message
-    @Binding var isPopupViewPresented: Bool
+    let messageMetaData: MessageMetaData
+    
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         VStack {
+            Spacer().frame(height: 32)
+            
+            Group {
+                Text("From")
+                    .font(.system(size: 24, weight: .semibold))
+                
+                Spacer().frame(height: 8)
+                
+                Text(messageMetaData.sender)
+            }
+            
             Spacer()
             
-            Text(message.emoji)
+            Text(messageMetaData.message.emoji)
                 .font(.system(size: 168))
             
             Spacer().frame(height: 24)
             
-            if let content = message.content {
+            if let content = messageMetaData.message.content {
                 Text(content)
                     .font(.system(size: 36, weight: .bold))
                     .multilineTextAlignment(.center)
@@ -30,17 +42,17 @@ struct MessagePopupView: View {
             Spacer()
             
             RoundedButton(label: "Close") {
-                isPopupViewPresented = false
+                dismiss()
             }
             .padding(.horizontal, 60)
             
-            Spacer().frame(height: 16)
+            Spacer().frame(height: 24)
         }
     }
 }
 
 struct MessagePopupView_Previews: PreviewProvider {
     static var previews: some View {
-        MessagePopupView(message: .init(emoji: "🤔", content: "waffle!"), isPopupViewPresented: .constant(true))
+        MessagePopupView(messageMetaData: .init(sender: "와플's iPhone", message: .init(emoji: "🤔", content: "waffle!")))
     }
 }

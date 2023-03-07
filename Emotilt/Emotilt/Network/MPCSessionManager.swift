@@ -77,7 +77,9 @@ class MPCSessionManager: NSObject {
             return
         }
         
-        guard let data = try? JSONEncoder().encode(message) else {
+        let messageMetaData = MessageMetaData(sender: session.myPeerID.displayName, message: message)
+        
+        guard let data = try? JSONEncoder().encode(messageMetaData) else {
             // fail to encode Message into data
             return
         }

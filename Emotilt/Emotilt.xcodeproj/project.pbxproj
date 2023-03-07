@@ -21,6 +21,7 @@
 		B8E7E25829AC8ADA0046D98E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B8E7E25729AC8ADA0046D98E /* Assets.xcassets */; };
 		B8E7E25B29AC8ADA0046D98E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B8E7E25A29AC8ADA0046D98E /* Preview Assets.xcassets */; };
 		B8E7E26729AC8C690046D98E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E7E26629AC8C690046D98E /* Message.swift */; };
+		B8F22B9729B7473E00FAE9F9 /* EmojiSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F22B9629B7473E00FAE9F9 /* EmojiSheet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,7 @@
 		B8E7E26129AC8BAD0046D98E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		B8E7E26629AC8C690046D98E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		B8F22B9529B7117B00FAE9F9 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		B8F22B9629B7473E00FAE9F9 /* EmojiSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiSheet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +113,7 @@
 				B8E7E25529AC8AD90046D98E /* HomeView.swift */,
 				B86014A729B1BE3100C27112 /* RoundedButton.swift */,
 				B86014A929B1BE6D00C27112 /* MessagePopupView.swift */,
+				B8F22B9629B7473E00FAE9F9 /* EmojiSheet.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -211,6 +214,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B8F22B9729B7473E00FAE9F9 /* EmojiSheet.swift in Sources */,
 				B86014AC29B1D03B00C27112 /* Float+ext.swift in Sources */,
 				B8E7E26729AC8C690046D98E /* Message.swift in Sources */,
 				B86014A829B1BE3100C27112 /* RoundedButton.swift in Sources */,
