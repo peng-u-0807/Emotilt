@@ -71,21 +71,25 @@ class MPCSessionManager: NSObject {
     }
     
     /// Send message to a specific peer
-    func sendMessage(_ message: Message, to peerID: MCPeerID) {
+    func sendMessage(_ message: Message, to peerID: MCPeerID, completion: (Bool) -> ()) {
         if !session.connectedPeers.contains(peerID) {
             print("unconnected peer")
+            completion(false)
             return
         }
         
         guard let data = try? JSONEncoder().encode(message) else {
             // fail to encode Message into data
+            completion(false)
             return
         }
         
         do {
             try session.send(data, toPeers: [peerID], with: .reliable)
+            completion(true)
         } catch let error {
             print(error)
+            completion(false)
         }
     }
 }

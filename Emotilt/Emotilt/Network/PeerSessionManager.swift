@@ -53,19 +53,24 @@ class PeerSessionManager: NSObject {
         }.store(in: &bag)
     }
     
-    func sendMessageToNearestPeer(_ message: Message) {
+    //TODO: nearestPeerToken should be direction first, then distance
+    func sendMessageToNearestPeer(_ message: Message, completion: (Bool) -> ()) {
         guard let token = nearestPeerToken else {
+            completion(false)
             print("no nearest peer's token")
             return
         }
-        print("trying to send to \(token)")
         
+        //print("trying to send to \(token)")
         guard let peerID = peerList.first(where: { $0.token == token })?.id else {
+            completion(false)
             print("no matching peer in peerList")
             return
         }
         
-        mpcSessionManager.sendMessage(message, to: peerID)
+        mpcSessionManager.sendMessage(message, to: peerID) { success in
+            completion(success)
+        }
     }
     
     /// 새로운 Peer를 추가하고 연결받을 준비를 합니다.
@@ -129,8 +134,16 @@ extension PeerSessionManager: NISessionDelegate {
     
     /// Sort nearbyObjects by direction and return the nearest object's discoveryToken
     private func getNearestPeer(from nearbyObjects: [NINearbyObject]) -> NIDiscoveryToken {
-        let directions = nearbyObjects.sorted { $0.distance ?? .zero < $1.distance ?? .zero }
-        return directions[0].discoveryToken
+        let directionFiltered = nearbyObjects.filter { $0.direction != nil }
+        if (!directionFiltered.isEmpty){
+            let directionSorted = directionFiltered.sorted(by: {
+                norm_one($0.direction!) < norm_one($1.direction!)
+            })
+            return directionSorted.first!.discoveryToken
+        }else{
+            let distanceSorted = nearbyObjects.sorted { $0.distance ?? .zero < $1.distance ?? .zero }
+            return distanceSorted[0].discoveryToken
+        }
     }
 }
 

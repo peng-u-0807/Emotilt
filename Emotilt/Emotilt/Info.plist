@@ -2,16 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>SERVICE_NAME</key>
-	<string>$(SERVICE_NAME)</string>
-	<key>SERVICE_IDENTIFIER</key>
-	<string>$(SERVICE_IDENTIFIER)</string>
-	<key>NSLocalNetworkUsageDescription</key>
-	<string>Emotilt에서 로컬 네트워크를 이용하고자 합니다.</string>
 	<key>NSBonjourServices</key>
 	<array>
 		<string>$(BONJOUR_SERVICES)</string>
 	</array>
+	<key>SERVICE_IDENTIFIER</key>
+	<string>$(SERVICE_IDENTIFIER)</string>
+	<key>SERVICE_NAME</key>
+	<string>$(SERVICE_NAME)</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
