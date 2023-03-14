@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import CoreMotion
 
 struct HomeView: View {
     
@@ -14,14 +15,28 @@ struct HomeView: View {
     @State private var isEmojiSheetOpen: Bool = false
     @FocusState private var isTextFieldFocused: Bool
     
+    //MARK: - 메세지 전송 관련 값
+    let motionManager = CMMotionManager()
+    @State private var sendTimer: Timer?
+    @State private var currentState: viewState = .none
+    @State private var isSending: Bool = false
+    @State private var isAccelerating: Bool = false
+    @State private var accelerationRate: Double = 0.0
+    @State private var counter: Int = 0
+    @State private var isReadyForSending: Bool = false
+    @State var isDetected: Bool = false
+    
+    @State var emoji : String = ""
+    @State var content : String = ""
+    
     var body: some View {
         VStack(alignment: .center) {
             Spacer()
             
             //MARK: - viewState label
-            switch (viewModel.currentState){
+            switch (currentState){
             case .sendingTimer:
-                Text("\(viewModel.counter)")
+                Text("\(counter)")
                     .font(.system(size: 40, weight: .bold))
             case .sendingSuccess:
                 Text("메세지 전송 성공!")
@@ -41,28 +56,28 @@ struct HomeView: View {
                     isEmojiSheetOpen = true
                 } label: {
                     ZStack {
-                            if viewModel.emoji.isEmpty {
-                                RoundedRectangle(cornerRadius: 32)
-                                    .fill(.tertiary.opacity(0.4))
-                                    .frame(width: 168, height: 168)
-                            }
-                            
-                            Text(viewModel.emoji)
-                                .font(.system(size: 168))
+                        if emoji.isEmpty {
+                            RoundedRectangle(cornerRadius: 32)
+                                .fill(.tertiary.opacity(0.4))
+                                .frame(width: 168, height: 168)
                         }
+                        
+                        Text(emoji)
+                            .font(.system(size: 168))
                     }
-                    
-                    
-                    ZStack {
-                        //DirectionIndicatorView()
-                    }
-                }.frame(width: 280, height: 280)
+                }
                 
-                Group {
-                    if #available(iOS 16.0, *) {
-                        TextField("", text: $viewModel
-                            .content, axis: .vertical)
-                        .placeholder(when: viewModel.content.isEmpty && !isTextFieldFocused) {
+                
+                ZStack {
+                    //DirectionIndicatorView()
+                }
+            }.frame(width: 280, height: 280)
+            
+            Group {
+                
+                if #available(iOS 16.0, *) {
+                    TextField("", text: $content, axis: .vertical)
+                        .placeholder(when: content.isEmpty && !isTextFieldFocused){
                             Text("20자 이내")
                                 .foregroundColor(.gray)
                                 .opacity(0.8)
@@ -72,44 +87,97 @@ struct HomeView: View {
                         .lineLimit(2)
                         .frame(height: 64)
                         .multilineTextAlignment(.center)
-                        .onReceive(Just($viewModel.content)) { _ in
-                            if viewModel.content.count > 20 {
-                                viewModel.content = String(viewModel.content.prefix(20))
+                        .onReceive(Just($content)) { _ in
+                            if content.count > 20 {
+                                content = String(content.prefix(20))
                             }
                         }
                         .submitLabel(.done)
-                        .onChange(of: viewModel.content) { text in
+                        .onChange(of: content) { text in
                             if text.last == "\n" {
-                                viewModel.content = String(text.dropLast())
+                                content = String(text.dropLast())
                                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
                             }
                         }
-                    } else {
-                        // Fallback on earlier versions
-                    }
-                    
-                }
-                
-                Spacer()
-                Spacer()
-                
-                RoundedButton(label: "Send") {
-                    //viewModel.detectAcceleration()
-                    viewModel.sendMessage()
+                } else {
+                    // Fallback on earlier versions
                 }
             }
-                .padding(.horizontal, 36)
-                .padding(.vertical, 24)
-                .onTapGesture(perform: {
-                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
-                })
-                .sheet(isPresented: $isEmojiSheetOpen) {
-                    EmojiSheetView(selected: $viewModel.emoji)
+            
+            Spacer()
+            Spacer()
+            
+            RoundedButton(label: "Send") {
+                detectAcceleration()
+            }
+        }
+        .padding(.horizontal, 36)
+        .padding(.vertical, 24)
+        .onTapGesture(perform: {
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
+        })
+        .sheet(isPresented: $isEmojiSheetOpen) {
+            EmojiSheetView(selected: $emoji)
+        }
+    }
+}
+
+//MARK: - message sending 
+extension HomeView {
+    func detectAcceleration(){
+        self.isDetected = false
+        isSending = true
+        currentState = .sendingTimer
+        
+        motionManager
+            .startAccelerometerUpdates(to: OperationQueue.current!, withHandler: { [self] (motion, error) in
+                isAccelerating = true
+                accelerationRate = (motion?.acceleration.x)! + 1
+                if ((motion?.acceleration.x)! > 0.35){
+                    isDetected = true
+                    motionManager.stopAccelerometerUpdates()
+                    UINotificationFeedbackGenerator().notificationOccurred(.success)
+                    sendMessage()
                 }
+            })
+        startTimer()
+    }
+    
+    ///5초 카운트다운을 시작함
+    func startTimer(){
+        if (counter == 0){ counter = 5 }
+        sendTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { tempTimer in
+            if (self.counter > 0){ self.counter -= 1 }
+            if (self.counter == 0 && !self.isDetected){
+                self.currentState = .motionDetectFailure
+                self.stopTimer()
+            }
         }
     }
     
+    func stopTimer(){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0){ //3초 딜레이
+            self.currentState = .none
+            self.isSending = false
+            self.sendTimer?.invalidate()
+            self.sendTimer = nil
+            self.emoji = ""
+            self.content = ""
+            self.currentState = .none
+            self.motionManager.stopAccelerometerUpdates()
+            self.isAccelerating = false
+        }
+    }
     
+    func sendMessage(){
+        viewModel.sendMessage(emoji: emoji, content: content){ success in
+            self.currentState = (success) ? .sendingSuccess : .sendingFailure
+        }
+        stopTimer()
+    }
+}
+
+
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView(viewModel: .init(peerSessionManager: .debug))
