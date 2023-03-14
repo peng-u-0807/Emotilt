@@ -19,7 +19,7 @@ struct EmotiltApp: App {
     
     var body: some Scene {
         WindowGroup {
-            HomeView(viewModel: .init(peerSessionManager: peerSessionManager))
+            HomeScene(viewModel: .init(peerSessionManager: peerSessionManager))
         }
     }
 }

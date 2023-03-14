@@ -1,5 +1,5 @@
 //
-//  HomeView.swift
+//  HomeScene.swift
 //  Emotilt
 //
 //  Created by 최유림 on 2023/02/27.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct HomeView: View {
+struct HomeScene: View {
     
     @ObservedObject var viewModel: HomeViewModel
     
@@ -42,7 +42,7 @@ struct HomeView: View {
             Spacer()
             
             RoundedButton(label: "Send") {
-                viewModel.sendMessage(.init(emoji: "🤔", content: "Nyam"))
+                viewModel.sendMessage(.init(emoji: "🤔", content: "Nyam \(Int.random(in: 0...20))"))
             }
             
             Spacer().frame(height: 16)
@@ -52,8 +52,8 @@ struct HomeView: View {
             EmojiSheet(selected: $emoji)
         }
         .sheet(isPresented: $viewModel.didReceiveMessage) {
-            if let messageMetaData = viewModel.receivedMessage {
-                MessagePopupView(messageMetaData: messageMetaData)
+            if let messageMetaData = viewModel.receivedMessageList.first {
+                MessagePopupView(messageMetaData: messageMetaData, leftCount: $viewModel.receivedMessageList.count)
             }
         }
     }
@@ -61,6 +61,6 @@ struct HomeView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView(viewModel: .init(peerSessionManager: .debug))
+        HomeScene(viewModel: .init(peerSessionManager: .debug))
     }
 }

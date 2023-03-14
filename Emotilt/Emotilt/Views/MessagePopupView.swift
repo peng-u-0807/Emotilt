@@ -9,12 +9,15 @@ import SwiftUI
 
 struct MessagePopupView: View {
     let messageMetaData: MessageMetaData
+    let leftCount: Int
     
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         VStack {
             Spacer().frame(height: 32)
+            
+            Text("\(leftCount) messages left")
             
             Group {
                 Text("From")
@@ -53,6 +56,6 @@ struct MessagePopupView: View {
 
 struct MessagePopupView_Previews: PreviewProvider {
     static var previews: some View {
-        MessagePopupView(messageMetaData: .init(sender: "와플's iPhone", message: .init(emoji: "🤔", content: "waffle!")))
+        MessagePopupView(messageMetaData: .init(sender: "와플's iPhone", message: .init(emoji: "🤔", content: "waffle!")), leftCount: 3)
     }
 }

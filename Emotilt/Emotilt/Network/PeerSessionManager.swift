@@ -17,7 +17,7 @@ class PeerSessionManager: NSObject {
     @Published var peerList: [Peer] = []
     
     /// 수신한 메시지
-    @Published var receivedMessage: MessageMetaData?
+    @Published var receivedMessage: [MessageMetaData] = []
     
     /// 현재 내 로컬 디바이스와 가장 가까이 있는 기기의 discoveryToken
     @Published var nearestPeerToken: NIDiscoveryToken?
@@ -48,7 +48,7 @@ class PeerSessionManager: NSObject {
             if let discoveryToken = try? NSKeyedUnarchiver.unarchivedObject(ofClass: NIDiscoveryToken.self, from: received.1) {
                 self?.receivedDiscoveryToken(from: received.0, token: discoveryToken)
             } else if let messageMetaData = try? JSONDecoder().decode(MessageMetaData.self, from: received.1) {
-                self?.receivedMessage = messageMetaData
+                self?.receivedMessage.append(messageMetaData)
             }
         }.store(in: &bag)
     }
@@ -66,6 +66,12 @@ class PeerSessionManager: NSObject {
         }
         
         mpcSessionManager.sendMessage(message, to: peerID)
+    }
+    
+    func removeFirstMessage() {
+        if !receivedMessage.isEmpty {
+            _ = receivedMessage.removeFirst()
+        }
     }
     
     /// 새로운 Peer를 추가하고 연결받을 준비를 합니다.
