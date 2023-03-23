@@ -370,11 +370,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Emotilt/Preview Content\"";
-				DEVELOPMENT_TEAM = 2CV8U244AV;
+				DEVELOPMENT_TEAM = H3J2ZWWZQV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Emotilt/Info.plist;
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Emotilt에서 로컬 네트워크를 이용하고자 합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "\"Emotilt wants to connect!\"";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -385,7 +386,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.peng.Emotilted;
+				PRODUCT_BUNDLE_IDENTIFIER = com.peng.Emotilt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -405,11 +406,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Emotilt/Preview Content\"";
-				DEVELOPMENT_TEAM = 2CV8U244AV;
+				DEVELOPMENT_TEAM = H3J2ZWWZQV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Emotilt/Info.plist;
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Emotilt에서 로컬 네트워크를 이용하고자 합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "\"Emotilt wants to connect!\"";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -420,7 +422,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.peng.Emotilted;
+				PRODUCT_BUNDLE_IDENTIFIER = com.peng.Emotilt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
