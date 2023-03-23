@@ -24,6 +24,9 @@ class HomeViewModel: BaseViewModel, ObservableObject {
     /// 수신한 메시지
     @Published var receivedMessage: Message?
     
+    /// 메세지 발신 성공 여부
+    @Published var didSendMessage: Bool?
+    
     var didReceiveMessage: Bool {
         receivedMessage != nil
     }
@@ -32,16 +35,14 @@ class HomeViewModel: BaseViewModel, ObservableObject {
     
     override init(peerSessionManager: PeerSessionManager) {
         super.init(peerSessionManager: peerSessionManager)
-        
         peerSessionManager.$peerList.assign(to: &$peerList)
         peerSessionManager.$receivedMessage.assign(to: &$receivedMessage)
+        peerSessionManager.$didSendMessage.assign(to: &$didSendMessage)
     }
     
-    func sendMessage(emoji: String, content: String, completion: (Bool) -> ()){
+    func sendMessage(emoji: String, content: String){
         let message = Message(emoji: emoji, content: content)
-        peerSessionManager.sendMessageToNearestPeer(message){ success in
-            completion(success)
-        }
+        peerSessionManager.sendMessageToNearestPeer(message)
     }
 }
 

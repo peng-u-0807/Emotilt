@@ -125,7 +125,7 @@ struct HomeView: View {
 //MARK: - message sending 
 extension HomeView {
     func detectAcceleration(){
-        self.isDetected = false
+        isDetected = false
         isSending = true
         currentState = .sendingTimer
         
@@ -170,13 +170,13 @@ extension HomeView {
     }
     
     func sendMessage(){
-        viewModel.sendMessage(emoji: emoji, content: content){ success in
-            self.currentState = (success) ? .sendingSuccess : .sendingFailure
+        viewModel.sendMessage(emoji: emoji, content: content)
+        if let didSendMessage = viewModel.didSendMessage {
+            currentState = didSendMessage ? .sendingSuccess : .sendingFailure
+            stopTimer()
         }
-        stopTimer()
     }
 }
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
