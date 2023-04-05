@@ -141,10 +141,11 @@ extension PeerSessionManager: NISessionDelegate {
                 norm_one($0.direction!) < norm_one($1.direction!)
             }
             return directionSorted.first!.discoveryToken
-        }else{
+        } else {
             let distanceSorted = nearbyObjects.sorted {
-                $0.distance ?? .zero < $1.distance ?? .zero }
-            return distanceSorted[0].discoveryToken
+                $0.distance ?? .zero < $1.distance ?? .zero
+            }
+            return distanceSorted.first!.discoveryToken
         }
     }
 }

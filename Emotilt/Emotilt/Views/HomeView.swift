@@ -19,12 +19,12 @@ struct HomeView: View {
     let motionManager = CMMotionManager()
     @State private var sendTimer: Timer?
     @State private var currentState: viewState = .none
-    @State private var isSending: Bool = false
-    @State private var isAccelerating: Bool = false
-    @State private var accelerationRate: Double = 0.0
-    @State private var counter: Int = 0
-    @State private var isReadyForSending: Bool = false
-    @State var isDetected: Bool = false
+    @State private var isSending = false
+    @State private var isAccelerating = false
+    @State private var accelerationRate = 0.0
+    @State private var counter = 0
+    @State private var isReadyForSending = false
+    @State var isDetected = false
     
     @State var emoji : String = ""
     @State var content : String = ""
@@ -34,7 +34,7 @@ struct HomeView: View {
             Spacer()
             
             //MARK: - viewState label
-            switch (currentState){
+            switch currentState {
             case .sendingTimer:
                 Text("\(counter)")
                     .font(.system(size: 40, weight: .bold))
@@ -48,7 +48,7 @@ struct HomeView: View {
                 Text("메시지를 보내려면 흔들어주세요!")
                     .font(.system(size: 20, weight: .bold))
             case .none:
-                Text("")
+                EmptyView()
             }
             
             ZStack {
@@ -124,55 +124,63 @@ struct HomeView: View {
 
 //MARK: - message sending 
 extension HomeView {
-    func detectAcceleration(){
+    func detectAcceleration() {
         isDetected = false
         isSending = true
         currentState = .sendingTimer
         
-        motionManager
-            .startAccelerometerUpdates(to: OperationQueue.current!, withHandler: { [self] (motion, error) in
+        motionManager.startAccelerometerUpdates(to: OperationQueue.current!) { [self] motion, error in
+            withAnimation {
                 isAccelerating = true
                 accelerationRate = (motion?.acceleration.x)! + 1
-                if ((motion?.acceleration.x)! > 0.35){
+                if (motion?.acceleration.x)! > 0.35 {
                     isDetected = true
                     motionManager.stopAccelerometerUpdates()
                     UINotificationFeedbackGenerator().notificationOccurred(.success)
                     sendMessage()
                 }
-            })
+            }
+        }
+        
         startTimer()
     }
     
     ///5초 카운트다운을 시작함
-    func startTimer(){
-        if (counter == 0){ counter = 5 }
+    func startTimer() {
+        if counter == 0 { counter = 5 }
         sendTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { tempTimer in
-            if (self.counter > 0){ self.counter -= 1 }
-            if (self.counter == 0 && !self.isDetected){
-                self.currentState = .motionDetectFailure
-                self.stopTimer()
+            withAnimation {
+                if self.counter > 0 { self.counter -= 1 }
+                if self.counter == 0 && !self.isDetected {
+                    self.currentState = .motionDetectFailure
+                    self.stopTimer()
+                }
             }
         }
     }
     
-    func stopTimer(){
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0){ //3초 딜레이
-            self.currentState = .none
-            self.isSending = false
-            self.sendTimer?.invalidate()
-            self.sendTimer = nil
-            self.emoji = ""
-            self.content = ""
-            self.currentState = .none
-            self.motionManager.stopAccelerometerUpdates()
-            self.isAccelerating = false
+    func stopTimer() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) { // 3초 딜레이
+            withAnimation {
+                self.currentState = .none
+                self.isSending = false
+                self.sendTimer?.invalidate()
+                self.sendTimer = nil
+                self.emoji = ""
+                self.content = ""
+                self.currentState = .none
+                self.motionManager.stopAccelerometerUpdates()
+                self.isAccelerating = false
+            }
         }
     }
     
-    func sendMessage(){
+    func sendMessage() {
         viewModel.sendMessage(emoji: emoji, content: content)
         if let didSendMessage = viewModel.didSendMessage {
-            currentState = didSendMessage ? .sendingSuccess : .sendingFailure
+            withAnimation {
+                currentState = didSendMessage ? .sendingSuccess : .sendingFailure
+            }
             stopTimer()
         }
     }
