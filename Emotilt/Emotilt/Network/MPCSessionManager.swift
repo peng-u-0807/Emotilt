@@ -17,7 +17,9 @@ class MPCSessionManager: NSObject {
     
     @Published var received: (MCPeerID, Data)?
     @Published var connectionState: (MCPeerID, MCSessionState)?
+    @Published var didSendMessage: Bool?
     
+
     override init() {
         self.session = .init(peer: localPeerID,
                              securityIdentity: nil,
@@ -74,18 +76,22 @@ class MPCSessionManager: NSObject {
     func sendMessage(_ message: Message, to peerID: MCPeerID) {
         if !session.connectedPeers.contains(peerID) {
             print("unconnected peer")
+            didSendMessage = false
             return
         }
         
         guard let data = try? JSONEncoder().encode(message) else {
             // fail to encode Message into data
+            didSendMessage = false
             return
         }
         
         do {
             try session.send(data, toPeers: [peerID], with: .reliable)
+            didSendMessage = true
         } catch let error {
             print(error)
+            didSendMessage = false
         }
     }
 }

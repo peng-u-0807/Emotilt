@@ -21,6 +21,9 @@ class PeerSessionManager: NSObject {
     
     /// 현재 내 로컬 디바이스와 가장 가까이 있는 기기의 discoveryToken
     @Published var nearestPeerToken: NIDiscoveryToken?
+    
+    /// 메세지 발신 성공 여부
+    @Published var didSendMessage: Bool?
 
     private var bag = Set<AnyCancellable>()
     
@@ -51,21 +54,27 @@ class PeerSessionManager: NSObject {
                 self?.receivedMessage = message
             }
         }.store(in: &bag)
+        
+        mpcSessionManager.$didSendMessage.receive(on: RunLoop.main).sink { [weak self] success in
+            self?.didSendMessage = success
+        }.store(in: &bag)
     }
     
     func sendMessageToNearestPeer(_ message: Message) {
         guard let token = nearestPeerToken else {
+            didSendMessage = false
             print("no nearest peer's token")
             return
         }
-        print("trying to send to \(token)")
         
         guard let peerID = peerList.first(where: { $0.token == token })?.id else {
+            didSendMessage = false
             print("no matching peer in peerList")
             return
         }
         
         mpcSessionManager.sendMessage(message, to: peerID)
+        print("Message success!")
     }
     
     /// 새로운 Peer를 추가하고 연결받을 준비를 합니다.
@@ -111,7 +120,6 @@ class PeerSessionManager: NSObject {
             print("no matching peer")
             return
         }
-        
         peer.token = token
         let config = NINearbyPeerConfiguration(peerToken: token)
         peer.session.run(config)
@@ -125,12 +133,20 @@ extension PeerSessionManager: NISessionDelegate {
         nearestPeerToken = getNearestPeer(from: nearbyObjects)
     }
     
-    // MARK: Get nearest device
-    
     /// Sort nearbyObjects by direction and return the nearest object's discoveryToken
     private func getNearestPeer(from nearbyObjects: [NINearbyObject]) -> NIDiscoveryToken {
-        let directions = nearbyObjects.sorted { $0.distance ?? .zero < $1.distance ?? .zero }
-        return directions[0].discoveryToken
+        let directionFiltered = nearbyObjects.filter { $0.direction != nil }
+        if !directionFiltered.isEmpty {
+            let directionSorted = directionFiltered.sorted {
+                norm_one($0.direction!) < norm_one($1.direction!)
+            }
+            return directionSorted.first!.discoveryToken
+        } else {
+            let distanceSorted = nearbyObjects.sorted {
+                $0.distance ?? .zero < $1.distance ?? .zero
+            }
+            return distanceSorted.first!.discoveryToken
+        }
     }
 }
 

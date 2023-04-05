@@ -1,4 +1,4 @@
-//
+///Users/grace/Library/Mobile Documents/com~apple~CloudDocs/Desktop/EmoTilt_Xcode13.4/EmoTilt_Xcode13.4/Config.xcconfig
 //  HomeViewModel.swift
 //  Emotilt
 //
@@ -6,6 +6,16 @@
 //
 
 import Foundation
+import CoreMotion
+import UIKit
+
+enum viewState {
+    case sendingSuccess //메세지 보내기 성공 직후 + 5초
+    case sendingFailure //메세지 보내기 실패 직후 + 5초
+    case motionDetectFailure //장전 이후 모션 감지 실패
+    case sendingTimer //장전 단계
+    case none //디폴트 화면
+}
 
 class HomeViewModel: BaseViewModel, ObservableObject {
     /// 연결된 peer 목록
@@ -14,18 +24,28 @@ class HomeViewModel: BaseViewModel, ObservableObject {
     /// 수신한 메시지
     @Published var receivedMessage: Message?
     
+    /// 메세지 발신 성공 여부
+    @Published var didSendMessage: Bool?
+    
     var didReceiveMessage: Bool {
         receivedMessage != nil
     }
     
+    @Published var currentState: viewState = .none
+    
     override init(peerSessionManager: PeerSessionManager) {
         super.init(peerSessionManager: peerSessionManager)
-        
         peerSessionManager.$peerList.assign(to: &$peerList)
         peerSessionManager.$receivedMessage.assign(to: &$receivedMessage)
+        peerSessionManager.$didSendMessage.assign(to: &$didSendMessage)
     }
     
-    func sendMessage(_ message: Message) {
+    func sendMessage(emoji: String, content: String){
+        let message = Message(emoji: emoji, content: content)
         peerSessionManager.sendMessageToNearestPeer(message)
     }
 }
+
+   
+
+

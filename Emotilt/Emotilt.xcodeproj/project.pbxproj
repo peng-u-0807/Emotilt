@@ -374,6 +374,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Emotilt/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Emotilt에서 로컬 네트워크를 이용하고자 합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "\"Emotilt wants to connect!\"";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -408,6 +410,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Emotilt/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Emotilt에서 로컬 네트워크를 이용하고자 합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "\"Emotilt wants to connect!\"";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
