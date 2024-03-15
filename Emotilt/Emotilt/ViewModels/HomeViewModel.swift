@@ -12,20 +12,26 @@ class HomeViewModel: BaseViewModel, ObservableObject {
     @Published var peerList: [Peer] = []
     
     /// 수신한 메시지
-    @Published var receivedMessage: Message?
+    @Published var receivedMessageList: [MessageMetaData] = []
     
+    /// close-only
     var didReceiveMessage: Bool {
-        receivedMessage != nil
+        get { !receivedMessageList.isEmpty }
+        set { removeFirstMessage() }
     }
     
     override init(peerSessionManager: PeerSessionManager) {
         super.init(peerSessionManager: peerSessionManager)
         
         peerSessionManager.$peerList.assign(to: &$peerList)
-        peerSessionManager.$receivedMessage.assign(to: &$receivedMessage)
+        peerSessionManager.$receivedMessage.assign(to: &$receivedMessageList)
     }
     
     func sendMessage(_ message: Message) {
         peerSessionManager.sendMessageToNearestPeer(message)
+    }
+    
+    private func removeFirstMessage() {
+        peerSessionManager.removeFirstMessage()
     }
 }

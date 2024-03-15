@@ -11,3 +11,9 @@ struct Message: Codable {
     let emoji: String
     let content: String?
 }
+
+/// Contains `sender` information
+struct MessageMetaData: Codable {
+    let sender: String
+    let message: Message
+}
