@@ -19,17 +19,23 @@ struct HomeScene: View {
         VStack(alignment: .center) {
             Spacer()
             
-            if emoji.isEmpty {
-                Button {
-                    isEmojiSheetOpen = true
-                } label: {
+            Button {
+                isEmojiSheetOpen = true
+            } label: {
+                if emoji.isEmpty {
                     RoundedRectangle(cornerRadius: 32)
                         .fill(.tertiary.opacity(0.4))
                         .frame(width: 168, height: 168)
+                        .overlay(
+                            VStack(spacing: 16) {
+                                Image(systemName: "plus")
+                                Text("Add emoji")
+                            }
+                        )
+                } else {
+                    Text(emoji)
+                        .font(.system(size: 168))
                 }
-            } else {
-                Text(emoji)
-                    .font(.system(size: 168))
             }
             
             Spacer().frame(height: 24)
@@ -37,12 +43,13 @@ struct HomeScene: View {
             TextField("", text: $content, prompt: Text("20자 이내"))
                 .font(.system(size: 24, weight: .bold))
                 .lineLimit(2)
+                .frame(maxWidth: .infinity)
                 .multilineTextAlignment(.center)
             
             Spacer()
             
             RoundedButton(label: "Send") {
-                viewModel.sendMessage(.init(emoji: "🤔", content: "Nyam \(Int.random(in: 0...20))"))
+                viewModel.sendMessage(.init(emoji: emoji, content: content))
             }
             
             Spacer().frame(height: 16)
@@ -56,11 +63,5 @@ struct HomeScene: View {
                 MessagePopupView(messageMetaData: messageMetaData, leftCount: $viewModel.receivedMessageList.count)
             }
         }
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeScene(viewModel: .init(peerSessionManager: .debug))
     }
 }

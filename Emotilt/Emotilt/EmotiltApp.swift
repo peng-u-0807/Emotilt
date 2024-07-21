@@ -14,7 +14,6 @@ struct EmotiltApp: App {
     
     init() {
         peerSessionManager = .init(mpcSessionManager: .init())
-        
     }
     
     var body: some Scene {
