@@ -17,12 +17,13 @@ struct HomeScene: View {
     @State private var emoji: String = ""
     @State private var content: String = ""
     
+    @FocusState private var isFocused: Bool
+    
     var body: some View {
-        VStack(alignment: .center) {
+        VStack {
             if viewModel.isConnected {
                 HStack(spacing: 4) {
                     Image(systemName: "checkmark.circle.fill")
-                        .tint(.black)
                     Text("상대방을 찾았습니다!")
                 }
                 .font(.system(size: 15, weight: .medium))
@@ -37,14 +38,12 @@ struct HomeScene: View {
                 isEmojiSheetOpen = true
             } label: {
                 if emoji.isEmpty {
-                    RoundedRectangle(cornerRadius: 32)
-                        .fill(.tertiary.opacity(0.4))
+                    RoundedRectangle(cornerRadius: 84)
+                        .fill(.tertiary.opacity(0.2))
                         .frame(width: 168, height: 168)
                         .overlay(
-                            VStack(spacing: 16) {
-                                Image(systemName: "plus")
-                                Text("Add emoji")
-                            }
+                            Image(systemName: "plus")
+                                .font(.system(size: 24))
                         )
                 } else {
                     Text(emoji)
@@ -54,25 +53,48 @@ struct HomeScene: View {
             
             Spacer().frame(height: 24)
             
-            TextField("", text: $content, prompt: Text("20자 이내"))
-                .font(.system(size: 24, weight: .bold))
-                .lineLimit(2)
-                .frame(maxWidth: .infinity)
-                .multilineTextAlignment(.center)
+            VStack(spacing: 24) {
+                TextField("", text: $content, prompt: Text("30자 이내"), axis: .vertical)
+                    .lineLimit(2)
+                    .font(.system(size: 24, weight: .bold))
+                    .multilineTextAlignment(.center)
+                    .onChange(of: content) { text in
+                        self.content = String(text.prefix(30))
+                    }
+                    .autocorrectionDisabled()
+                    .focused($isFocused)
+                
+                if isButtonActivated {
+                    Button {
+                        emoji = ""
+                        content = ""
+                    } label: {
+                        HStack(spacing: 4) {
+                            Image(systemName: "arrow.clockwise")
+                                .tint(.black)
+                            Text("입력 내용 초기화")
+                        }
+                        .font(.system(size: 15))
+                    }
+                }
+            }
             
             Spacer()
             
             RoundedButton(isActivated: $isButtonActivated, label: "Send") {
                 viewModel.sendMessage(.init(emoji: emoji, content: content))
             }
-            
-            Spacer().frame(height: 16)
         }
         .padding(.horizontal, 36)
         .padding(.top, 32)
-        .padding(.bottom, 8)
+        .padding(.bottom, 24)
         .onChange(of: [content.isEmpty, emoji.isEmpty]) { empty in
             isButtonActivated = !empty[0] && !empty[1]
+        }
+        .background()
+        .containerShape(Rectangle())
+        .onTapGesture {
+            isFocused = false
         }
         .sheet(isPresented: $isEmojiSheetOpen) {
             EmojiSheet(selected: $emoji)

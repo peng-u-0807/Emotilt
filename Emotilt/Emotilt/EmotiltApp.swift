@@ -19,6 +19,7 @@ struct EmotiltApp: App {
     var body: some Scene {
         WindowGroup {
             HomeScene(viewModel: .init(peerSessionManager: peerSessionManager))
+                .tint(.black)
         }
     }
 }
