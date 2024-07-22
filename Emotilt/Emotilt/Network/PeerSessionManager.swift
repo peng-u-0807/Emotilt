@@ -16,6 +16,9 @@ class PeerSessionManager: NSObject {
     /// 연결된 peer
     var connectedPeer: Peer?
     
+    /// 연결된 peer이 있는지에 대한 변수
+    @Published var isConnected: Bool = false
+    
     /// 수신한 메시지
     @Published var receivedMessage: [MessageMetaData] = []
     
@@ -31,7 +34,7 @@ class PeerSessionManager: NSObject {
 
         connectedPeer = .init(session: NISession())
         connectedPeer?.session.delegate = self
-        
+
         mpcSessionManager.$connectionState.compactMap { $0 }.receive(on: RunLoop.main).sink { [weak self] state in
             switch state.1 {
             case .connected:
@@ -74,13 +77,15 @@ class PeerSessionManager: NSObject {
     
     /// Register peerID to peerList and append new session
     private func registerNewPeer(_ peerID: MCPeerID) {
-        guard let connectedPeer = connectedPeer else {
+        guard let _ = connectedPeer else {
             return
         }
         sendDiscoveryToken(to: peerID)
+        isConnected = true
     }
     
     private func deleteUnconnectedPeer(_ peerID: MCPeerID) {
+        isConnected = false
         mpcSessionManager.deleteUnconnectedPeer(peerID)
     }
     
@@ -90,6 +95,7 @@ class PeerSessionManager: NSObject {
         connectedPeer?.token = token
         //let config = NINearbyPeerConfiguration(peerToken: token)
         //connectedPeer?.session.run(config)
+        isConnected = true
     }
 }
 

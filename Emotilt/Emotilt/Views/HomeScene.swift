@@ -12,11 +12,25 @@ struct HomeScene: View {
     @ObservedObject var viewModel: HomeViewModel
     
     @State private var isEmojiSheetOpen: Bool = false
+    @State private var isButtonActivated: Bool = false
+    
     @State private var emoji: String = ""
     @State private var content: String = ""
     
     var body: some View {
         VStack(alignment: .center) {
+            if viewModel.isConnected {
+                HStack(spacing: 4) {
+                    Image(systemName: "checkmark.circle.fill")
+                        .tint(.black)
+                    Text("상대방을 찾았습니다!")
+                }
+                .font(.system(size: 15, weight: .medium))
+            } else {
+                Text("상대방을 찾고 있습니다...")
+                    .font(.system(size: 15))
+            }
+            
             Spacer()
             
             Button {
@@ -48,13 +62,18 @@ struct HomeScene: View {
             
             Spacer()
             
-            RoundedButton(label: "Send") {
+            RoundedButton(isActivated: $isButtonActivated, label: "Send") {
                 viewModel.sendMessage(.init(emoji: emoji, content: content))
             }
             
             Spacer().frame(height: 16)
         }
         .padding(.horizontal, 36)
+        .padding(.top, 32)
+        .padding(.bottom, 8)
+        .onChange(of: [content.isEmpty, emoji.isEmpty]) { empty in
+            isButtonActivated = !empty[0] && !empty[1]
+        }
         .sheet(isPresented: $isEmojiSheetOpen) {
             EmojiSheet(selected: $emoji)
         }

@@ -16,6 +16,8 @@ class HomeViewModel: BaseViewModel, ObservableObject {
     /// 수신한 메시지
     @Published var receivedMessageList: [MessageMetaData] = []
     
+    @Published var isConnected: Bool = true
+    
     /// close-only
     var didReceiveMessage: Bool {
         get { !receivedMessageList.isEmpty }
@@ -26,6 +28,7 @@ class HomeViewModel: BaseViewModel, ObservableObject {
         super.init(peerSessionManager: peerSessionManager)
 
         peerSessionManager.$receivedMessage.assign(to: &$receivedMessageList)
+        peerSessionManager.$isConnected.assign(to: &$isConnected)
     }
     
     func sendMessage(_ message: Message) {

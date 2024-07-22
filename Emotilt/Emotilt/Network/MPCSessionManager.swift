@@ -118,9 +118,15 @@ extension MPCSessionManager: MCNearbyServiceBrowserDelegate {
         }
         
         // if session's maximum number is required, implement here
+        #if targetEnvironment(simulator)
+        if serviceName == Configuration.simulatorIdentifier {
+            browser.invitePeer(peerID, to: mcSession, withContext: nil, timeout: 10)
+        }
+        #else
         if serviceName == Configuration.serviceIdentifier {
             browser.invitePeer(peerID, to: mcSession, withContext: nil, timeout: 10)
         }
+        #endif
     }
     
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {

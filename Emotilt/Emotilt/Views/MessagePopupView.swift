@@ -44,7 +44,7 @@ struct MessagePopupView: View {
             
             Spacer()
             
-            RoundedButton(label: "Close") {
+            RoundedButton(isActivated: .constant(true), label: "Close") {
                 dismiss()
             }
             .padding(.horizontal, 60)
