@@ -12,42 +12,90 @@ struct HomeScene: View {
     @ObservedObject var viewModel: HomeViewModel
     
     @State private var isEmojiSheetOpen: Bool = false
+    @State private var isButtonActivated: Bool = false
+    
     @State private var emoji: String = ""
     @State private var content: String = ""
     
+    @FocusState private var isFocused: Bool
+    
     var body: some View {
-        VStack(alignment: .center) {
+        VStack {
+            if viewModel.isConnected {
+                HStack(spacing: 4) {
+                    Image(systemName: "checkmark.circle.fill")
+                    Text("상대방을 찾았습니다!")
+                }
+                .font(.system(size: 15, weight: .medium))
+            } else {
+                Text("상대방을 찾고 있습니다...")
+                    .font(.system(size: 15))
+            }
+            
             Spacer()
             
-            if emoji.isEmpty {
-                Button {
-                    isEmojiSheetOpen = true
-                } label: {
-                    RoundedRectangle(cornerRadius: 32)
-                        .fill(.tertiary.opacity(0.4))
+            Button {
+                isEmojiSheetOpen = true
+            } label: {
+                if emoji.isEmpty {
+                    RoundedRectangle(cornerRadius: 84)
+                        .fill(.tertiary.opacity(0.2))
                         .frame(width: 168, height: 168)
+                        .overlay(
+                            Image(systemName: "plus")
+                                .font(.system(size: 24))
+                        )
+                } else {
+                    Text(emoji)
+                        .font(.system(size: 168))
                 }
-            } else {
-                Text(emoji)
-                    .font(.system(size: 168))
             }
             
             Spacer().frame(height: 24)
             
-            TextField("", text: $content, prompt: Text("20자 이내"))
-                .font(.system(size: 24, weight: .bold))
-                .lineLimit(2)
-                .multilineTextAlignment(.center)
+            VStack(spacing: 24) {
+                TextField("", text: $content, prompt: Text("30자 이내"), axis: .vertical)
+                    .lineLimit(2)
+                    .font(.system(size: 24, weight: .bold))
+                    .multilineTextAlignment(.center)
+                    .onChange(of: content) { text in
+                        self.content = String(text.prefix(30))
+                    }
+                    .autocorrectionDisabled()
+                    .focused($isFocused)
+                
+                if isButtonActivated {
+                    Button {
+                        emoji = ""
+                        content = ""
+                    } label: {
+                        HStack(spacing: 4) {
+                            Image(systemName: "arrow.clockwise")
+                                .tint(.black)
+                            Text("입력 내용 초기화")
+                        }
+                        .font(.system(size: 15))
+                    }
+                }
+            }
             
             Spacer()
             
-            RoundedButton(label: "Send") {
-                viewModel.sendMessage(.init(emoji: "🤔", content: "Nyam \(Int.random(in: 0...20))"))
+            RoundedButton(isActivated: $isButtonActivated, label: "Send") {
+                viewModel.sendMessage(.init(emoji: emoji, content: content))
             }
-            
-            Spacer().frame(height: 16)
         }
         .padding(.horizontal, 36)
+        .padding(.top, 32)
+        .padding(.bottom, 24)
+        .onChange(of: [content.isEmpty, emoji.isEmpty]) { empty in
+            isButtonActivated = !empty[0] && !empty[1]
+        }
+        .background()
+        .containerShape(Rectangle())
+        .onTapGesture {
+            isFocused = false
+        }
         .sheet(isPresented: $isEmojiSheetOpen) {
             EmojiSheet(selected: $emoji)
         }
@@ -56,11 +104,5 @@ struct HomeScene: View {
                 MessagePopupView(messageMetaData: messageMetaData, leftCount: $viewModel.receivedMessageList.count)
             }
         }
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeScene(viewModel: .init(peerSessionManager: .debug))
     }
 }

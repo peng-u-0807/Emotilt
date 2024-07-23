@@ -8,11 +8,15 @@
 import Foundation
 
 class HomeViewModel: BaseViewModel, ObservableObject {
-    /// 연결된 peer 목록
-    @Published var peerList: [Peer] = []
+    
+    var connectedPeer: Peer? {
+        peerSessionManager.connectedPeer
+    }
     
     /// 수신한 메시지
     @Published var receivedMessageList: [MessageMetaData] = []
+    
+    @Published var isConnected: Bool = true
     
     /// close-only
     var didReceiveMessage: Bool {
@@ -22,9 +26,9 @@ class HomeViewModel: BaseViewModel, ObservableObject {
     
     override init(peerSessionManager: PeerSessionManager) {
         super.init(peerSessionManager: peerSessionManager)
-        
-        peerSessionManager.$peerList.assign(to: &$peerList)
+
         peerSessionManager.$receivedMessage.assign(to: &$receivedMessageList)
+        peerSessionManager.$isConnected.assign(to: &$isConnected)
     }
     
     func sendMessage(_ message: Message) {

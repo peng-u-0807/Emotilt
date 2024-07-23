@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct RoundedButton: View {
+    @Binding var isActivated: Bool
     let label: String
     let action: () -> Void
     
@@ -24,11 +25,6 @@ struct RoundedButton: View {
         .tint(.black)
         .buttonStyle(.borderedProminent)
         .cornerRadius(48)
-    }
-}
-
-struct RoundedButton_Previews: PreviewProvider {
-    static var previews: some View {
-        RoundedButton(label: "Close") {}
+        .disabled(!isActivated)
     }
 }

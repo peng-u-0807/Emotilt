@@ -22,7 +22,6 @@
 		B8E7E25B29AC8ADA0046D98E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B8E7E25A29AC8ADA0046D98E /* Preview Assets.xcassets */; };
 		B8E7E26729AC8C690046D98E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E7E26629AC8C690046D98E /* Message.swift */; };
 		B8F22B9729B7473E00FAE9F9 /* EmojiSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F22B9629B7473E00FAE9F9 /* EmojiSheet.swift */; };
-		E3704D2029BF716400D98CF2 /* Placeholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3704D1F29BF716400D98CF2 /* Placeholder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,7 +43,6 @@
 		B8E7E26629AC8C690046D98E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		B8F22B9529B7117B00FAE9F9 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		B8F22B9629B7473E00FAE9F9 /* EmojiSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiSheet.swift; sourceTree = "<group>"; };
-		E3704D1F29BF716400D98CF2 /* Placeholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Placeholder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,7 +148,6 @@
 		E3704D1E29BF713500D98CF2 /* ViewExtensions */ = {
 			isa = PBXGroup;
 			children = (
-				E3704D1F29BF716400D98CF2 /* Placeholder.swift */,
 			);
 			path = ViewExtensions;
 			sourceTree = "<group>";
@@ -183,7 +180,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1420;
-				LastUpgradeCheck = 1420;
+				LastUpgradeCheck = 1530;
 				TargetAttributes = {
 					B8E7E24F29AC8AD90046D98E = {
 						CreatedOnToolsVersion = 14.2;
@@ -229,7 +226,6 @@
 				B86014AC29B1D03B00C27112 /* Float+ext.swift in Sources */,
 				B8E7E26729AC8C690046D98E /* Message.swift in Sources */,
 				B86014A829B1BE3100C27112 /* RoundedButton.swift in Sources */,
-				E328C87529BF6D9300DDA727 /* EmojiSheetView.swift in Sources */,
 				B860149729AE3E6B00C27112 /* Peer.swift in Sources */,
 				B860149929AE3F5C00C27112 /* MPCSessionManager.swift in Sources */,
 				B86014A129AE5E3400C27112 /* HomeViewModel.swift in Sources */,
@@ -239,7 +235,6 @@
 				B860149D29AE549C00C27112 /* PeerSessionManager.swift in Sources */,
 				B86014A429B19B3000C27112 /* Configuration.swift in Sources */,
 				B8E7E25429AC8AD90046D98E /* EmotiltApp.swift in Sources */,
-				E3704D2029BF716400D98CF2 /* Placeholder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,6 +278,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -344,6 +340,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -379,7 +376,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -413,7 +410,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

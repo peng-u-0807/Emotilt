@@ -11,7 +11,7 @@ import MultipeerConnectivity
 
 /// Custom object for NISession sharing same NISessionDelegate
 class Peer {
-    let session: NISession
+    var session: NISession
     
     /// Currently connected peer in this session
     var id: MCPeerID?
@@ -23,5 +23,9 @@ class Peer {
     
     init(session: NISession) {
         self.session = session
+    }
+    
+    func restartSession() {
+        session = NISession()
     }
 }

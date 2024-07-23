@@ -14,12 +14,12 @@ struct EmotiltApp: App {
     
     init() {
         peerSessionManager = .init(mpcSessionManager: .init())
-        
     }
     
     var body: some Scene {
         WindowGroup {
             HomeScene(viewModel: .init(peerSessionManager: peerSessionManager))
+                .tint(.black)
         }
     }
 }

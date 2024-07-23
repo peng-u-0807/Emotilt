@@ -13,14 +13,17 @@ import MultipeerConnectivity
 class PeerSessionManager: NSObject {
     private let mpcSessionManager: MPCSessionManager
     
-    /// 연결된 peer 목록
-    @Published var peerList: [Peer] = []
+    /// 연결된 peer
+    var connectedPeer: Peer?
+    
+    /// 연결된 peer이 있는지에 대한 변수
+    @Published var isConnected: Bool = false
     
     /// 수신한 메시지
     @Published var receivedMessage: [MessageMetaData] = []
     
     /// 현재 내 로컬 디바이스와 가장 가까이 있는 기기의 discoveryToken
-    @Published var nearestPeerToken: NIDiscoveryToken?
+    //@Published var nearestPeerToken: NIDiscoveryToken?
 
     private var bag = Set<AnyCancellable>()
     
@@ -28,9 +31,10 @@ class PeerSessionManager: NSObject {
         self.mpcSessionManager = mpcSessionManager
         
         super.init()
-        
-        peerList.append(getReadyForPeer())
-        
+
+        connectedPeer = .init(session: NISession())
+        connectedPeer?.session.delegate = self
+
         mpcSessionManager.$connectionState.compactMap { $0 }.receive(on: RunLoop.main).sink { [weak self] state in
             switch state.1 {
             case .connected:
@@ -44,28 +48,17 @@ class PeerSessionManager: NSObject {
             }
         }.store(in: &bag)
         
-        mpcSessionManager.$received.compactMap { $0 }.receive(on: RunLoop.main).sink { [weak self] received in
+        mpcSessionManager.$received.compactMap { $0 }.receive(on: DispatchQueue.main).sink { received in
             if let discoveryToken = try? NSKeyedUnarchiver.unarchivedObject(ofClass: NIDiscoveryToken.self, from: received.1) {
-                self?.receivedDiscoveryToken(from: received.0, token: discoveryToken)
+                self.receivedDiscoveryToken(from: received.0, token: discoveryToken)
             } else if let messageMetaData = try? JSONDecoder().decode(MessageMetaData.self, from: received.1) {
-                self?.receivedMessage.append(messageMetaData)
+                self.receivedMessage.append(messageMetaData)
             }
         }.store(in: &bag)
     }
     
     func sendMessageToNearestPeer(_ message: Message) {
-        guard let token = nearestPeerToken else {
-            print("no nearest peer's token")
-            return
-        }
-        print("trying to send to \(token)")
-        
-        guard let peerID = peerList.first(where: { $0.token == token })?.id else {
-            print("no matching peer in peerList")
-            return
-        }
-        
-        mpcSessionManager.sendMessage(message, to: peerID)
+        mpcSessionManager.sendMessage(message, to: connectedPeer?.id)
     }
     
     func removeFirstMessage() {
@@ -74,53 +67,35 @@ class PeerSessionManager: NSObject {
         }
     }
     
-    /// 새로운 Peer를 추가하고 연결받을 준비를 합니다.
-    private func getReadyForPeer() -> Peer {
-        let peer = Peer(session: .init())
-        peer.session.delegate = self
-        return peer
-    }
-    
-    private func sendDiscoveryToken(_ token: NIDiscoveryToken, to peer: MCPeerID) {
-        mpcSessionManager.sendDiscoveryToken(token, to: peer)
+    private func sendDiscoveryToken(to peer: MCPeerID) {
+        guard let token = connectedPeer?.session.discoveryToken else {
+            print("connectPeer is nil")
+            return
+        }
+        mpcSessionManager.sendDiscoveryToken(token)
     }
     
     /// Register peerID to peerList and append new session
     private func registerNewPeer(_ peerID: MCPeerID) {
-        if let peer = peerList.first(where: { $0.id == nil }) {
-            guard let myToken = peer.session.discoveryToken else {
-                return
-            }
-            
-            if !peer.didShareToken {
-                sendDiscoveryToken(myToken, to: peerID)
-                peer.didShareToken = true
-                peer.id = peerID
-                
-                peerList.append(getReadyForPeer())
-                for peer in peerList {
-                    print(peer.id)
-                    print(peer.token)
-                }
-                print("did register new peer")
-            }
+        guard let _ = connectedPeer else {
+            return
         }
+        sendDiscoveryToken(to: peerID)
+        isConnected = true
     }
     
     private func deleteUnconnectedPeer(_ peerID: MCPeerID) {
-        peerList.removeAll(where: { $0.id == peerID && $0.session.configuration != nil })
+        isConnected = false
+        mpcSessionManager.deleteUnconnectedPeer(peerID)
     }
     
-    /// Session을 열어둔 상태에서 token을 받은 경우
     private func receivedDiscoveryToken(from peerID: MCPeerID, token: NIDiscoveryToken) {
-        guard let peer = peerList.first(where: { $0.id == peerID }) else {
-            print("no matching peer")
-            return
-        }
-        
-        peer.token = token
-        let config = NINearbyPeerConfiguration(peerToken: token)
-        peer.session.run(config)
+        print("received discovery token from \(peerID), token: \(token)")
+        connectedPeer?.id = peerID
+        connectedPeer?.token = token
+        //let config = NINearbyPeerConfiguration(peerToken: token)
+        //connectedPeer?.session.run(config)
+        isConnected = true
     }
 }
 
@@ -128,22 +103,41 @@ extension PeerSessionManager: NISessionDelegate {
     
     // session이 열렸을 때에만 동작
     func session(_ session: NISession, didUpdate nearbyObjects: [NINearbyObject]) {
-        nearestPeerToken = getNearestPeer(from: nearbyObjects)
+        print(nearbyObjects)
+        //nearestPeerToken = getNearestPeer(from: nearbyObjects)
     }
     
     // MARK: Get nearest device
     
     /// Sort nearbyObjects by direction and return the nearest object's discoveryToken
     private func getNearestPeer(from nearbyObjects: [NINearbyObject]) -> NIDiscoveryToken {
-        let directions = nearbyObjects.sorted { $0.distance ?? .zero < $1.distance ?? .zero }
-        return directions[0].discoveryToken
+//        let directions = nearbyObjects.sorted { $0.distance ?? .zero < $1.distance ?? .zero }
+//        return directions[0].discoveryToken
+        
+        return nearbyObjects.first!.discoveryToken
     }
+    
+//    func session(_ session: NISession, didRemove nearbyObjects: [NINearbyObject], reason: NINearbyObject.RemovalReason) {
+//        switch reason {
+//        case .peerEnded:
+//            // The peer token is no longer valid.
+//            
+//            // The peer stopped communicating, so invalidate the session because it's finished.
+//            session.invalidate()
+//            
+//            // Restart the sequence to see if the peer comes back.
+//            connectedPeer?.restartSession()
+//            connectedPeer?.session.delegate = self
+//            
+//        case .timeout:
+//            
+//            // The peer timed out, but the session is valid.
+//            // If the configuration is valid, run the session again.
+//            if let config = session.configuration {
+//                session.run(config)
+//            }
+//        default:
+//            fatalError("Unknown and unhandled NINearbyObject.RemovalReason")
+//        }
+//    }
 }
-
-#if DEBUG
-    extension PeerSessionManager {
-        static var debug: PeerSessionManager {
-            .init(mpcSessionManager: .debug)
-        }
-    }
-#endif
