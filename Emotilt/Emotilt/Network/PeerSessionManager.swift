@@ -48,11 +48,11 @@ class PeerSessionManager: NSObject {
             }
         }.store(in: &bag)
         
-        mpcSessionManager.$received.compactMap { $0 }.receive(on: DispatchQueue.main).sink { received in
+        mpcSessionManager.$received.compactMap { $0 }.receive(on: DispatchQueue.main).sink { [weak self] received in
             if let discoveryToken = try? NSKeyedUnarchiver.unarchivedObject(ofClass: NIDiscoveryToken.self, from: received.1) {
-                self.receivedDiscoveryToken(from: received.0, token: discoveryToken)
+                self?.receivedDiscoveryToken(from: received.0, token: discoveryToken)
             } else if let messageMetaData = try? JSONDecoder().decode(MessageMetaData.self, from: received.1) {
-                self.receivedMessage.append(messageMetaData)
+                self?.receivedMessage.append(messageMetaData)
             }
         }.store(in: &bag)
     }
@@ -92,15 +92,15 @@ class PeerSessionManager: NSObject {
     
     private func deleteUnconnectedPeer(_ peerID: MCPeerID) {
         isConnected = false
-        mpcSessionManager.deleteUnconnectedPeer(peerID)
+        connectedPeer = .init(session: NISession())
+        connectedPeer?.session.delegate = self
+        mpcSessionManager.deleteConnectedPeer(peerID)
     }
     
     private func receivedDiscoveryToken(from peerID: MCPeerID, token: NIDiscoveryToken) {
         print("received discovery token from \(peerID), token: \(token)")
         connectedPeer?.id = peerID
         connectedPeer?.token = token
-        //let config = NINearbyPeerConfiguration(peerToken: token)
-        //connectedPeer?.session.run(config)
         isConnected = true
     }
 }

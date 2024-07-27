@@ -97,8 +97,8 @@ struct HomeScene: View {
         .padding(.horizontal, 36)
         .padding(.top, 32)
         .padding(.bottom, 16)
-        .onChange(of: [content.isEmpty, emoji.isEmpty]) { empty in
-            isButtonActivated = !empty[0] && !empty[1]
+        .onChange(of: [content.isEmpty, emoji.isEmpty, viewModel.isConnected]) { condition in
+            isButtonActivated = !condition[0] && !condition[1] && condition[2]
         }
         .alert("다른 상대 찾기", isPresented: $showFindNewPeerAlert) {
             Button("취소", role: .cancel) {}
@@ -106,7 +106,7 @@ struct HomeScene: View {
                 viewModel.findNewPeer()
             }
         } message: {
-            Text("현재 상대를 다시 만날 수도 있습니다. 새로운 상대를 찾아볼까요?")
+            Text("새로운 상대를 찾아볼까요? 현재 상대를 다시 만날 수도 있습니다.")
         }
         .background()
         .containerShape(Rectangle())
