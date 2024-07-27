@@ -67,6 +67,12 @@ class PeerSessionManager: NSObject {
         }
     }
     
+    func findNewPeer() {
+        if let peerID = connectedPeer?.id {
+            deleteUnconnectedPeer(peerID)
+        }
+    }
+    
     private func sendDiscoveryToken(to peer: MCPeerID) {
         guard let token = connectedPeer?.session.discoveryToken else {
             print("connectPeer is nil")

@@ -9,7 +9,7 @@ import Foundation
 
 struct Message: Codable {
     let emoji: String
-    let content: String?
+    let content: String
 }
 
 /// Contains `sender` information

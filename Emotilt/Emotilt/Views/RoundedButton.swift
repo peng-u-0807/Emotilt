@@ -10,6 +10,8 @@ import SwiftUI
 struct RoundedButton: View {
     @Binding var isActivated: Bool
     let label: String
+    let textColor: Color
+    let tintColor: Color
     let action: () -> Void
     
     var body: some View {
@@ -17,12 +19,12 @@ struct RoundedButton: View {
             action()
         } label: {
             Text(label)
-                .foregroundColor(.white)
+                .foregroundColor(textColor)
                 .font(.system(size: 17, weight: .semibold))
                 .padding(.vertical, 16)
                 .frame(maxWidth: .infinity)
         }
-        .tint(.black)
+        .tint(tintColor)
         .buttonStyle(.borderedProminent)
         .cornerRadius(48)
         .disabled(!isActivated)
