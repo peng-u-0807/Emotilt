@@ -15,42 +15,44 @@ struct MessagePopupView: View {
     
     var body: some View {
         VStack {
-            Spacer().frame(height: 32)
-            
-            Text("\(leftCount) messages left")
-            
-            Group {
-                Text("From")
-                    .font(.system(size: 24, weight: .semibold))
+            HStack(spacing: 4) {
+                Image(systemName: "paperplane.fill")
+                    .font(.system(size: 13))
                 
-                Spacer().frame(height: 8)
-                
-                Text(messageMetaData.sender)
+                if leftCount == 1 {
+                    Text("1 new message")
+                } else if leftCount > 1 {
+                    Text("\(leftCount) new messages")
+                }
             }
             
             Spacer()
             
-            Text(messageMetaData.message.emoji)
-                .font(.system(size: 168))
-            
-            Spacer().frame(height: 24)
-            
-            if let content = messageMetaData.message.content {
-                Text(content)
-                    .font(.system(size: 36, weight: .bold))
+            VStack(spacing: 24) {
+                VStack(spacing: 4) {
+                    Text("from")
+                        .font(.system(size: 16, weight: .medium))
+                    Text(messageMetaData.sender + " :")
+                        .font(.system(size: 16, weight: .bold))
+                }
+                
+                Text(messageMetaData.message.emoji)
+                    .font(.system(size: 168))
+                
+                Text(messageMetaData.message.content)
+                    .font(.system(size: 24, weight: .bold))
                     .multilineTextAlignment(.center)
-                    .padding(.horizontal, 36)
             }
             
             Spacer()
             
-            RoundedButton(isActivated: .constant(true), label: "Close") {
+            RoundedButton(isActivated: .constant(true), label: "Close", textColor: .white, tintColor: .black) {
                 dismiss()
-            }
-            .padding(.horizontal, 60)
+            }.padding(.horizontal, 36)
             
             Spacer().frame(height: 24)
         }
+        .padding(.top, 32)
     }
 }
 

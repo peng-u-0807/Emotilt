@@ -31,6 +31,10 @@ class HomeViewModel: BaseViewModel, ObservableObject {
         peerSessionManager.$isConnected.assign(to: &$isConnected)
     }
     
+    func findNewPeer() {
+        peerSessionManager.findNewPeer()
+    }
+    
     func sendMessage(_ message: Message) {
         peerSessionManager.sendMessageToNearestPeer(message)
     }
