@@ -138,6 +138,7 @@ extension MPCSessionManager: MCNearbyServiceBrowserDelegate {
     
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
         print("lost peer: \(peerID)")
+        self.connectionState = (peerID, .notConnected)
     }
 }
 

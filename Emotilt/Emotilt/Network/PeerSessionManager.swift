@@ -42,6 +42,7 @@ class PeerSessionManager: NSObject {
             case .notConnected:
                 self?.deleteUnconnectedPeer(state.0)
             case .connecting:
+                self?.registerNewPeer(state.0)
                 print("connecting")
             @unknown default:
                 print("default")
