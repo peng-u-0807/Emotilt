@@ -90,7 +90,6 @@
 				B8E7E25329AC8AD90046D98E /* EmotiltApp.swift */,
 				B8E7E26529AC8C4A0046D98E /* Extensions */,
 				B8E7E26229AC8C360046D98E /* Views */,
-				E3704D1E29BF713500D98CF2 /* ViewExtensions */,
 				B8E7E26429AC8C400046D98E /* ViewModels */,
 				B860149529AE3E4A00C27112 /* Network */,
 				B8E7E26329AC8C3B0046D98E /* Models */,
@@ -143,13 +142,6 @@
 				B86014AB29B1D03B00C27112 /* Float+ext.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		E3704D1E29BF713500D98CF2 /* ViewExtensions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewExtensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

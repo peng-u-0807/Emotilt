@@ -13,6 +13,7 @@ struct HomeScene: View {
     
     @State private var isEmojiSheetOpen: Bool = false
     @State private var isButtonActivated: Bool = false
+    @State private var showFindNewPeerAlert: Bool = false
     
     @State private var emoji: String = ""
     @State private var content: String = ""
@@ -34,26 +35,24 @@ struct HomeScene: View {
             
             Spacer()
             
-            Button {
-                isEmojiSheetOpen = true
-            } label: {
-                if emoji.isEmpty {
-                    RoundedRectangle(cornerRadius: 84)
-                        .fill(.tertiary.opacity(0.2))
-                        .frame(width: 168, height: 168)
-                        .overlay(
-                            Image(systemName: "plus")
-                                .font(.system(size: 24))
-                        )
-                } else {
-                    Text(emoji)
-                        .font(.system(size: 168))
-                }
-            }
-            
-            Spacer().frame(height: 24)
-            
             VStack(spacing: 24) {
+                Button {
+                    isEmojiSheetOpen = true
+                } label: {
+                    if emoji.isEmpty {
+                        RoundedRectangle(cornerRadius: 84)
+                            .fill(.tertiary.opacity(0.2))
+                            .frame(width: 168, height: 168)
+                            .overlay(
+                                Image(systemName: "plus")
+                                    .font(.system(size: 24))
+                            )
+                    } else {
+                        Text(emoji)
+                            .font(.system(size: 168))
+                    }
+                }
+                
                 TextField("", text: $content, prompt: Text("30자 이내"), axis: .vertical)
                     .lineLimit(2)
                     .font(.system(size: 24, weight: .bold))
@@ -81,15 +80,33 @@ struct HomeScene: View {
             
             Spacer()
             
-            RoundedButton(isActivated: $isButtonActivated, label: "Send") {
-                viewModel.sendMessage(.init(emoji: emoji, content: content))
+            VStack(spacing: 8) {
+                RoundedButton(isActivated: $isButtonActivated, 
+                              label: "Send",
+                              textColor: .white, tintColor: .black) {
+                    viewModel.sendMessage(.init(emoji: emoji, content: content))
+                }
+                
+                RoundedButton(isActivated: .constant(true),
+                              label: "다른 상대 찾기",
+                              textColor: .gray, tintColor: .clear) {
+                    showFindNewPeerAlert = true
+                }
             }
         }
         .padding(.horizontal, 36)
         .padding(.top, 32)
-        .padding(.bottom, 24)
-        .onChange(of: [content.isEmpty, emoji.isEmpty]) { empty in
-            isButtonActivated = !empty[0] && !empty[1]
+        .padding(.bottom, 16)
+        .onChange(of: [content.isEmpty, emoji.isEmpty, viewModel.isConnected]) { condition in
+            isButtonActivated = !condition[0] && !condition[1] && condition[2]
+        }
+        .alert("다른 상대 찾기", isPresented: $showFindNewPeerAlert) {
+            Button("취소", role: .cancel) {}
+            Button("찾기") {
+                viewModel.findNewPeer()
+            }
+        } message: {
+            Text("새로운 상대를 찾아볼까요? 현재 상대를 다시 만날 수도 있습니다.")
         }
         .background()
         .containerShape(Rectangle())

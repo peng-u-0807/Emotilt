@@ -62,8 +62,10 @@ class MPCSessionManager: NSObject {
         mcSession.disconnect()
     }
     
-    func deleteUnconnectedPeer(_ peerID: MCPeerID) {
+    func deleteConnectedPeer(_ peerID: MCPeerID) {
         mcSession.cancelConnectPeer(peerID)
+        suspendLookingForPeers()
+        startLookingForPeers()
     }
     
     /// Share local device's discovery token to peers
@@ -86,8 +88,9 @@ class MPCSessionManager: NSObject {
             // fail to encode Message into data
             return
         }
+        guard let peerID = peerID else { return }
         do {
-            try mcSession.send(data, toPeers: mcSession.connectedPeers, with: .reliable)
+            try mcSession.send(data, toPeers: [peerID], with: .reliable)
         } catch let error {
             print("Error occured while sending to \([peerID]), connectedPeers: \(mcSession.connectedPeers)")
             print(error)
@@ -97,11 +100,15 @@ class MPCSessionManager: NSObject {
 
 extension MPCSessionManager: MCSessionDelegate {
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
-        connectionState = (peerID, state)
+        DispatchQueue.main.async {
+            self.connectionState = (peerID, state)
+        }
     }
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-        received = (peerID, data)
+        DispatchQueue.main.async {
+            self.received = (peerID, data)
+        }
     }
     
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {}
@@ -131,6 +138,7 @@ extension MPCSessionManager: MCNearbyServiceBrowserDelegate {
     
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
         print("lost peer: \(peerID)")
+        self.connectionState = (peerID, .notConnected)
     }
 }
 
