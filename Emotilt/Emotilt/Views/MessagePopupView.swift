@@ -46,7 +46,7 @@ struct MessagePopupView: View {
             
             Spacer()
             
-            RoundedButton(isActivated: .constant(true), label: "Close", textColor: .white, tintColor: .black) {
+            RoundedButton(isActivated: .constant(true), label: "닫기", textColor: .white, tintColor: .black) {
                 dismiss()
             }.padding(.horizontal, 36)
             

@@ -21,9 +21,6 @@ class PeerSessionManager: NSObject {
     
     /// 수신한 메시지
     @Published var receivedMessage: [MessageMetaData] = []
-    
-    /// 현재 내 로컬 디바이스와 가장 가까이 있는 기기의 discoveryToken
-    //@Published var nearestPeerToken: NIDiscoveryToken?
 
     private var bag = Set<AnyCancellable>()
     
@@ -82,7 +79,7 @@ class PeerSessionManager: NSObject {
         mpcSessionManager.sendDiscoveryToken(token)
     }
     
-    /// Register peerID to peerList and append new session
+    /// Register peerID if there's no currently connected Peer
     private func registerNewPeer(_ peerID: MCPeerID) {
         guard let _ = connectedPeer else {
             return

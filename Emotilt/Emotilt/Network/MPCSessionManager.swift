@@ -10,7 +10,7 @@ import MultipeerConnectivity
 import NearbyInteraction
 
 class MPCSessionManager: NSObject {
-    private let localPeerID = MCPeerID(displayName: UIDevice.current.name)
+    private let myPeerID = MCPeerID(displayName: UIDevice.current.name)
     private let mcSession: MCSession
     private let advertiser: MCNearbyServiceAdvertiser
     private let browser: MCNearbyServiceBrowser
@@ -19,8 +19,13 @@ class MPCSessionManager: NSObject {
     @Published var connectionState: (MCPeerID, MCSessionState)?
     
     override init() {
+        self.mcSession = .init(peer: myPeerID,
+                             securityIdentity: nil,
+                             encryptionPreference: .required)
+        self.browser = .init(peer: myPeerID,
+                             serviceType: Configuration.serviceName)
         #if targetEnvironment(simulator)
-        self.advertiser = .init(peer: localPeerID,
+        self.advertiser = .init(peer: myPeerID,
                                 discoveryInfo: [Configuration.serviceName: Configuration.simulatorIdentifier],
                                 serviceType: Configuration.serviceName)
         #else
@@ -28,14 +33,8 @@ class MPCSessionManager: NSObject {
                                 discoveryInfo: [Configuration.serviceName: Configuration.serviceIdentifier],
                                 serviceType: Configuration.serviceName)
         #endif
-        self.mcSession = .init(peer: localPeerID,
-                             securityIdentity: nil,
-                             encryptionPreference: .required)
-        
-        self.browser = .init(peer: localPeerID,
-                             serviceType: Configuration.serviceName)
-        
         super.init()
+        
         self.advertiser.delegate = self
         self.browser.delegate = self
         self.mcSession.delegate = self
@@ -44,7 +43,7 @@ class MPCSessionManager: NSObject {
     }
     
     deinit {
-        invalidateSession()
+        mcSession.disconnect()
     }
     
     func startLookingForPeers() {
@@ -63,7 +62,7 @@ class MPCSessionManager: NSObject {
     }
     
     func deleteConnectedPeer(_ peerID: MCPeerID) {
-        mcSession.cancelConnectPeer(peerID)
+        mcSession.disconnect()
         suspendLookingForPeers()
         startLookingForPeers()
     }
@@ -92,23 +91,18 @@ class MPCSessionManager: NSObject {
         do {
             try mcSession.send(data, toPeers: [peerID], with: .reliable)
         } catch let error {
-            print("Error occured while sending to \([peerID]), connectedPeers: \(mcSession.connectedPeers)")
-            print(error)
+            print("Error occured while sending to \([peerID]), connectedPeers: \(mcSession.connectedPeers) \n \(error)")
         }
     }
 }
 
 extension MPCSessionManager: MCSessionDelegate {
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
-        DispatchQueue.main.async {
-            self.connectionState = (peerID, state)
-        }
+        self.connectionState = (peerID, state)
     }
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-        DispatchQueue.main.async {
-            self.received = (peerID, data)
-        }
+        self.received = (peerID, data)
     }
     
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {}

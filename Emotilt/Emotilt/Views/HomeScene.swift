@@ -73,7 +73,6 @@ struct HomeScene: View {
                                 .tint(.black)
                             Text("입력 내용 초기화")
                         }
-                        .font(.system(size: 15))
                     }
                 }
             }
@@ -82,7 +81,7 @@ struct HomeScene: View {
             
             VStack(spacing: 8) {
                 RoundedButton(isActivated: $isButtonActivated, 
-                              label: "Send",
+                              label: "전송",
                               textColor: .white, tintColor: .black) {
                     viewModel.sendMessage(.init(emoji: emoji, content: content))
                 }

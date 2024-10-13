@@ -16,7 +16,7 @@ class HomeViewModel: BaseViewModel, ObservableObject {
     /// 수신한 메시지
     @Published var receivedMessageList: [MessageMetaData] = []
     
-    @Published var isConnected: Bool = true
+    @Published var isConnected: Bool = false
     
     /// close-only
     var didReceiveMessage: Bool {
