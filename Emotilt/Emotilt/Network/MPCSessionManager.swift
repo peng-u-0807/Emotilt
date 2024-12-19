@@ -29,7 +29,7 @@ class MPCSessionManager: NSObject {
                                 discoveryInfo: [Configuration.serviceName: Configuration.simulatorIdentifier],
                                 serviceType: Configuration.serviceName)
         #else
-        self.advertiser = .init(peer: localPeerID,
+        self.advertiser = .init(peer: myPeerID,
                                 discoveryInfo: [Configuration.serviceName: Configuration.serviceIdentifier],
                                 serviceType: Configuration.serviceName)
         #endif
